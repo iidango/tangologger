@@ -23,15 +23,12 @@ if __name__ == "__main__":
     parser.add_argument("src_dir", type=str, help="path to src_dir to be processed")
     parser.add_argument("dst_dir", type=str, help="path to dst_dir to be output")
     parser.add_argument("floorplan_fn", type=str, help="path to floorplan image file")
-    parser.add_argument("ppm", type=float, help="NOT USED: pixel per meter(9.8516666667, 11.81, 23.62)")
     parser.add_argument("rotx", type=float, help="x element of rotation vecrtor")
     parser.add_argument("roty", type=float, help="y element of rotation vecrtor")
     parser.add_argument("rotz", type=float, help="z element of rotation vecrtor")
     parser.add_argument("trax", type=float, help="x element of translation")
     parser.add_argument("tray", type=float, help="y element of translation")
     parser.add_argument("traz", type=float, help="z element of translation")
-    parser.add_argument("width", type=int, nargs='?', default=1754, help="NOT USED: width of floorplan img(default=1754)")
-    parser.add_argument("height", type=int, nargs='?', default=1240, help="NOT USED: height of floorplan img(default=1754)")
 
     args = parser.parse_args()
 
@@ -42,9 +39,6 @@ if __name__ == "__main__":
     floorplan = types.Floorplan()
     floorplan.id = os.path.basename(args.floorplan_fn)
     floorplan.pose = types.Pose(translation=np.array([0, 0, 0]))
-    # floorplan.metadata.pix_per_meter = 59.05/6    # zengaku
-    # floorplan.metadata.pix_per_meter = 59.05/5  # eng2f
-    # floorplan.metadata.pix_per_meter = 59.05/2.5  # sfu
     # floorplan.metadata.pix_per_meter = args.ppm
     floorplan.metadata.pix_per_meter = 10.0    # fix
 
