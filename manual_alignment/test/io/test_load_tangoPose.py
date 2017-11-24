@@ -18,10 +18,15 @@ IN_CAMERAPOSE_FILENAME = "*_cameraPose.csv"
 
 OUT_RECONSTRUCTION_FILENAME = "tangoCameraPose.json"
 
-TEST_CAMERA = types.SphericalCamera()
-TEST_CAMERA.id = "gear360"
-TEST_CAMERA.width = 3840
-TEST_CAMERA.height = 1920
+GEAR360_CAMERA = types.SphericalCamera()
+GEAR360_CAMERA.id = "gear360"
+GEAR360_CAMERA.width = 3840
+GEAR360_CAMERA.height = 1920
+
+THETA_CAMERA = types.SphericalCamera()
+THETA_CAMERA.id = "theta"
+THETA_CAMERA.width = 1920
+THETA_CAMERA.height = 960
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="alignment script")
@@ -44,10 +49,15 @@ if __name__ == "__main__":
     # load cameraPose file
     cameraPose_in_fn_list = glob.glob(os.path.join(args.src_dir, IN_CAMERAPOSE_FILENAME))
     reconstructions = []
+    if args.theta:
+        camera = THETA_CAMERA
+    else:
+        camera = GEAR360_CAMERA
+
     for fn in cameraPose_in_fn_list:
         # reconstructions.append(tangoPoseHandler.loadTangoPose(fn, TEST_CAMERA))
         reconstructions.append(
-            tangoPoseHandler.loadTangoPoseWithVideo(fn, TEST_CAMERA, args.video_fn, args.fps, args.delay, args.max_frame_num, rotate))
+            tangoPoseHandler.loadTangoPoseWithVideo(fn, camera, args.video_fn, args.fps, args.delay, args.max_frame_num, rotate))
 
     # save reconstruction file
     recon_out_fn = os.path.join(args.dst_dir, OUT_RECONSTRUCTION_FILENAME)
