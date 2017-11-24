@@ -1,0 +1,41 @@
+body {
+    margin: 0px;
+}
+#loading {
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   width: 508px;
+   height: 381px;
+   margin-top: -190px; /* Half the height */
+   margin-left: -254px; /* Half the width */
+}
+
+#info {
+    position: absolute;
+    top: 0px;
+    left: 10px;
+    background-color: #000;
+    visibility: hidden;
+}
+#image {
+    width: 160px;
+    height: 120px;
+}
+#text {
+    text-align: center;
+    font-family: sans-serif;
+    font-size: 10px;
+    color: #FFF;
+}
+#navigation {
+    position: absolute;
+    top: 0px;
+    left: 10px;
+    display: none;
+    font-family: sans-serif;
+    font-size: 30px;
+}
+#journeyButton {
+    display: none;
+}

@@ -1,0 +1,14 @@
+.DS_Store
+.idea/
+.Trash/
+.ipynb_checkpoints/
+*.pyc
+*.png
+*.PNG
+*.jpg
+*.JPG
+*.mp4
+*.MP4
+
+__pycache__/
+data/
