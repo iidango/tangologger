@@ -120,39 +120,72 @@ class TangoPose(types.Pose):
 
         return rmat
 
-def loadTangoPose(fn, camera):
+def loadTangoPose(fn, camera, fps = 3.):
     """
     csv format: timestamp(unixtime[sec]),x[m],y[m],z[m],rotQ1,rotQ2,rotQ3,rotQ4
     
     :type fn: str
     :type camera: scripts.myopensfm.types.Camera
+    :type fps: float
     :rtype reconstruction: scripts.myopensfm.types.Reconstruction
     """
     reconstruction = types.Reconstruction()
     reconstruction.add_camera(camera)
 
     with open(fn) as f:
-        mylogger.logger.info("loading " + fn)
-
         reader = csv.reader(f)
+
+        t_pose = 0.
+        pre_pose_data = None
+        t_video = 0.
         count = 0
-        for row in reader:
-            count += 1
-            if count%100 != 0:
-                continue
+        if fps == 0:
+            period = 0
+        else:
+            period = 1./fps
 
-            pose = TangoPose(np.array(row[1:4]), np.array(row[4:8]))
-            pose.setRotationAndTranslation()
-            metadata = types.ShotMetadata()
-            metadata.capture_time = float(row[0])
+        for pose_data in reader:
+            if pre_pose_data is None:
+                pre_pose_data = pose_data
 
-            shot = types.Shot()
-            shot.id = "{0:08d}".format(count) + ".png"
-            shot.camera = camera
-            shot.pose = pose
-            shot.metadata = metadata
+            t_pose += float(pose_data[0]) - float(pre_pose_data[0])
+            if t_pose > period * (count + 1):
+                pose = TangoPose(np.array(pose_data[1:4]), np.array(pose_data[4:8]))
+                pose.setRotationAndTranslation()
+                metadata = types.ShotMetadata()
+                metadata.capture_time = float(pose_data[0])
+                shot = types.Shot()
+                shot.id = "{0:08d}".format(count) + ".png"
+                shot.camera = camera
+                shot.pose = pose
+                shot.metadata = metadata
+                reconstruction.add_shot(shot)
 
-            reconstruction.add_shot(shot)
+                count += 1
+            pre_pose_data = pose_data
+
+    # with open(fn) as f:
+    #     mylogger.logger.info("loading " + fn)
+    #
+    #     reader = csv.reader(f)
+    #     count = 0
+    #     for row in reader:
+    #         count += 1
+    #         if count%100 != 0:
+    #             continue
+    #
+    #         pose = TangoPose(np.array(row[1:4]), np.array(row[4:8]))
+    #         pose.setRotationAndTranslation()
+    #         metadata = types.ShotMetadata()
+    #         metadata.capture_time = float(row[0])
+    #
+    #         shot = types.Shot()
+    #         shot.id = "{0:08d}".format(count) + ".png"
+    #         shot.camera = camera
+    #         shot.pose = pose
+    #         shot.metadata = metadata
+    #
+    #         reconstruction.add_shot(shot)
 
         mylogger.logger.info("Done")
     return reconstruction
@@ -218,7 +251,10 @@ def loadTangoPoseWithVideo(fn, camera, video_fn, fps = 3.,delay = 0., max_frame_
         pre_pose_data = None
         t_video = 0.
         count = 0
-        period = 1./fps
+        if fps == 0:
+            period = 0
+        else:
+            period = 1./fps
 
         while True:
             ret, frame = video.read()

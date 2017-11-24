@@ -34,7 +34,7 @@ if __name__ == "__main__":
     parser.add_argument("src_dir", help="path to src_dir to be processed")
     parser.add_argument("dst_dir", help="path to dst_dir to be output")
     parser.add_argument("video_fn", help="path to video")
-    parser.add_argument("fps", type=float, default=3., nargs='?',help="output frame per second(default 3.)")
+    parser.add_argument("fps", type=float, default=3., nargs='?',help="output frame per second(default 3., 0 for max)")
     parser.add_argument("delay", type=float, default=0., nargs='?',help="video delay(default 0.)")
     parser.add_argument("max_frame_num", type=int, default=0, nargs='?',help="max frame num")
     parser.add_argument("-t", "--theta", default=False, action="store_true", help="theta video(rotate 180 degree)")
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     for fn in cameraPose_in_fn_list:
         if args.no_video or not os.path.exists(args.video_fn):
             mylogger.logger.info('load tango pose without video')
-            reconstructions.append(tangoPoseHandler.loadTangoPose(fn, camera))
+            reconstructions.append(tangoPoseHandler.loadTangoPose(fn, camera, args.fps))
         else:
             mylogger.logger.info('load tango pose with video: {}'.format(args.video_fn))
             reconstructions.append(tangoPoseHandler.loadTangoPoseWithVideo(fn, camera, args.video_fn, args.fps, args.delay, args.max_frame_num, rotate))
