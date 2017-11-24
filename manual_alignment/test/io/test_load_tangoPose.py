@@ -13,6 +13,7 @@ import glob
 import math
 from utils import types
 from handler import tangoPoseHandler, reconstructionHandler
+import mylogger
 
 IN_CAMERAPOSE_FILENAME = "*_cameraPose.csv"
 
@@ -37,6 +38,7 @@ if __name__ == "__main__":
     parser.add_argument("delay", type=float, default=0., nargs='?',help="video delay(default 0.)")
     parser.add_argument("max_frame_num", type=int, default=0, nargs='?',help="max frame num")
     parser.add_argument("-t", "--theta", default=False, action="store_true", help="theta video(rotate 180 degree)")
+    parser.add_argument("-n", "--no_video", default=False, action="store_true", help="no video")
     args = parser.parse_args()
 
     if args.theta:
@@ -55,9 +57,12 @@ if __name__ == "__main__":
         camera = GEAR360_CAMERA
 
     for fn in cameraPose_in_fn_list:
-        # reconstructions.append(tangoPoseHandler.loadTangoPose(fn, TEST_CAMERA))
-        reconstructions.append(
-            tangoPoseHandler.loadTangoPoseWithVideo(fn, camera, args.video_fn, args.fps, args.delay, args.max_frame_num, rotate))
+        if args.no_video or not os.path.exists(args.video_fn):
+            mylogger.logger.info('load tango pose without video')
+            reconstructions.append(tangoPoseHandler.loadTangoPose(fn, camera))
+        else:
+            mylogger.logger.info('load tango pose with video: {}'.format(args.video_fn))
+            reconstructions.append(tangoPoseHandler.loadTangoPoseWithVideo(fn, camera, args.video_fn, args.fps, args.delay, args.max_frame_num, rotate))
 
     # save reconstruction file
     recon_out_fn = os.path.join(args.dst_dir, OUT_RECONSTRUCTION_FILENAME)
