@@ -11,8 +11,10 @@ sys.path.append(os.path.abspath('/grad/1/iida/mytools/python2.7/lib/python2.7/si
 import argparse
 import copy
 import numpy as np
+import yaml
 from handler import reconstructionHandler, floorplanHandler
 from utils import types
+import mylogger
 
 IN_RECONSTRUCTION_FILENAME = "tangoCameraPose.json"
 OUT_RECONSTRUCTION_FILENAME = "tangoCameraPose_floor.json"
@@ -23,21 +25,43 @@ if __name__ == "__main__":
     parser.add_argument("src_dir", type=str, help="path to src_dir to be processed")
     parser.add_argument("dst_dir", type=str, help="path to dst_dir to be output")
     parser.add_argument("floorplan_fn", type=str, help="floorplan image name")
-    parser.add_argument("rotx", type=float, help="x element of rotation vecrtor")
-    parser.add_argument("roty", type=float, help="y element of rotation vecrtor")
-    parser.add_argument("rotz", type=float, help="z element of rotation vecrtor")
-    parser.add_argument("trax", type=float, help="x element of translation")
-    parser.add_argument("tray", type=float, help="y element of translation")
-    parser.add_argument("traz", type=float, help="z element of translation")
+    parser.add_argument("rotx", nargs='?', type=float, help="x element of rotation vecrtor")
+    parser.add_argument("roty", nargs='?', type=float, help="y element of rotation vecrtor")
+    parser.add_argument("rotz", nargs='?', type=float, help="z element of rotation vecrtor")
+    parser.add_argument("trax", nargs='?', type=float, help="x element of translation")
+    parser.add_argument("tray", nargs='?', type=float, help="y element of translation")
+    parser.add_argument("traz", nargs='?', type=float, help="z element of translation")
+    parser.add_argument("-m", "--meta", nargs='?', type=str, help="load meta yaml file")
 
     args = parser.parse_args()
+    fp_name = os.path.basename(args.floorplan_fn)
+    meta = args.meta
+    if meta is None:
+        rotx = args.rotx
+        roty = args.roty
+        rotz = args.rotz
+        trax = args.trax
+        tray = args.tray
+        traz = args.traz
+    else:
+        meta_fn = os.path.join(args.src_dir, meta)
+        mylogger.logger.info('load meta yaml file: {}'.format(meta_fn))
+        with open(meta_fn, 'r') as f:
+            data = yaml.load(f)
+        rotx = data[fp_name]['manual_alignment']['rotx']
+        roty = data[fp_name]['manual_alignment']['roty']
+        rotz = data[fp_name]['manual_alignment']['rotz']
+        trax = data[fp_name]['manual_alignment']['trax']
+        tray = data[fp_name]['manual_alignment']['tray']
+        traz = data[fp_name]['manual_alignment']['traz']
+
 
     # load reconstruction file
     recon_in_fn = os.path.join(args.src_dir, IN_RECONSTRUCTION_FILENAME)
     reconstructions = reconstructionHandler.loadReconstruction(recon_in_fn)
 
     floorplan = types.Floorplan()
-    floorplan.id = os.path.basename(args.floorplan_fn)
+    floorplan.id = fp_name
     floorplan.pose = types.Pose(translation=np.array([0, 0, 0]))
     # floorplan.metadata.pix_per_meter = args.ppm
     floorplan.metadata.pix_per_meter = 10.0    # fix
@@ -50,8 +74,8 @@ if __name__ == "__main__":
     shots_offset = types.Pose()
     # shots_offset.rotation = np.array([0, 0, 1.635])
     # shots_offset.translation = np.array([15.5, -21.5, 1.5])
-    shots_offset.rotation = np.array([args.rotx, args.roty, args.rotz])
-    shots_offset.translation = np.array([args.trax, args.tray, args.traz])
+    shots_offset.rotation = np.array([rotx, roty, rotz])
+    shots_offset.translation = np.array([trax, tray, traz])
 
     reconstructions[0].metadata.shots_offset = shots_offset
     reconstructions[0].add_floorplan(floorplan)
@@ -68,4 +92,20 @@ if __name__ == "__main__":
     # save reconstruction file
     recon_out_fn = os.path.join(args.dst_dir, OUT_RECONSTRUCTION_FILENAME)
     reconstructionHandler.saveReconstructions(reconstructions, recon_out_fn)
+
+    # save parameters for yaml
+    data = {}
+    data[floorplan.id] = {}
+    data[floorplan.id]['manual_alignment'] = {}
+    data[floorplan.id]['manual_alignment']['rotx'] = args.rotx
+    data[floorplan.id]['manual_alignment']['roty'] = args.roty
+    data[floorplan.id]['manual_alignment']['rotz'] = args.rotz
+    data[floorplan.id]['manual_alignment']['trax'] = args.trax
+    data[floorplan.id]['manual_alignment']['tray'] = args.tray
+    data[floorplan.id]['manual_alignment']['traz'] = args.traz
+    if meta is None:
+        meta_fn = os.path.join(args.dst_dir, 'meta.yaml')
+        with open(meta_fn, 'w') as f:
+            f.write(yaml.dump(data, default_flow_style=False))
+
 

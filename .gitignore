@@ -10,7 +10,8 @@
 *.mp4
 *.MP4
 *.json
-# *.csv
+*.csv
+*.yaml
 
 __pycache__/
 data/
