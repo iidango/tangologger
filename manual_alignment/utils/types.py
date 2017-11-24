@@ -1,10 +1,11 @@
 """Basic types for building a reconstruction."""
 
-import numpy as np
-import cv2
-import os
 import csv
-import glob
+import os
+
+import cv2
+import numpy as np
+
 import mylogger
 
 

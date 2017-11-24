@@ -2,17 +2,17 @@
 # -*- coding: utf-8 -*-
 
 import os
+
 import sys
+
 sys.path.append(os.path.abspath(os.path.dirname(__file__)+'/../../'))
 sys.path.append(os.path.abspath('/grad/1/iida/mytools/python2.7/lib/python2.7/site-packages/'))
 
 import argparse
 import glob
-import mylogger
 import math
 from utils import types
-from handler import tangoPoseHandler
-from handler import reconstructionHandler
+from handler import tangoPoseHandler, reconstructionHandler
 
 IN_CAMERAPOSE_FILENAME = "*_cameraPose.csv"
 

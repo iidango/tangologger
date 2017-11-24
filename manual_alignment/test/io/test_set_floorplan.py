@@ -2,16 +2,16 @@
 # -*- coding: utf-8 -*-
 
 import os
+
 import sys
+
 sys.path.append(os.path.abspath(os.path.dirname(__file__)+'/../../'))
 sys.path.append(os.path.abspath('/grad/1/iida/mytools/python2.7/lib/python2.7/site-packages/'))
 
 import argparse
 import copy
 import numpy as np
-import mylogger
-from handler import reconstructionHandler
-from handler import floorplanHandler
+from handler import reconstructionHandler, floorplanHandler
 from utils import types
 
 IN_RECONSTRUCTION_FILENAME = "tangoCameraPose.json"
@@ -22,7 +22,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="alignment script")
     parser.add_argument("src_dir", type=str, help="path to src_dir to be processed")
     parser.add_argument("dst_dir", type=str, help="path to dst_dir to be output")
-    parser.add_argument("floorplan_fn", type=str, help="path to floorplan image file")
+    parser.add_argument("floorplan_fn", type=str, help="floorplan image name")
     parser.add_argument("rotx", type=float, help="x element of rotation vecrtor")
     parser.add_argument("roty", type=float, help="y element of rotation vecrtor")
     parser.add_argument("rotz", type=float, help="z element of rotation vecrtor")

@@ -3,12 +3,13 @@
 
 
 import os
+
 import sys
+
 sys.path.append(os.path.abspath(os.path.dirname(__file__)+'/../../'))
 sys.path.append(os.path.abspath('/grad/1/iida/mytools/python2.7/lib/python2.7/site-packages/'))
 
 import argparse
-import mylogger
 from handler import reconstructionHandler
 
 IN_RECONSTRUCTION_FILENAME = "reconstruction.json"

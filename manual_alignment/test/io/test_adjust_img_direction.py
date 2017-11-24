@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import os
+
 import sys
+
 sys.path.append(os.path.abspath(os.path.dirname(__file__)+'/../../'))
 sys.path.append(os.path.abspath('/grad/1/iida/mytools/python2.7/lib/python2.7/site-packages/'))
 
@@ -11,8 +13,7 @@ import math
 import cv2
 import numpy as np
 import mylogger
-from handler import reconstructionHandler
-from handler import tangoPoseHandler
+from handler import tangoPoseHandler, reconstructionHandler
 
 IN_RECONSTRUCTION_FILENAME = "tangoCameraPose_floor.json"
 
