@@ -9,6 +9,8 @@
 *.JPG
 *.mp4
 *.MP4
+*.json
+*.csv
 
 __pycache__/
 data/

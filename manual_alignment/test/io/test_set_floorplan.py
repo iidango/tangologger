@@ -62,7 +62,7 @@ if __name__ == "__main__":
     shots_offset = np.identity(4, dtype=float)
     shots_offset[:3, :4] = tmp_reconstruction.metadata.shots_offset.get_Rt()
     reconstructionHandler.setOffset(tmp_reconstruction, shots_offset)
-    floorplanHandler.plotShotPoses(tmp_reconstruction.shots, floorplan, args.src_dir, "floorplan_camera.png")
+    floorplanHandler.plotShotPoses(tmp_reconstruction.shots, floorplan, args.src_dir, "floorplan_trajectory.png")
     floorplanHandler.save2DTrajectory(tmp_reconstruction.shots, floorplan, args.src_dir, TRAJECTORY_FILENAME)
 
     # save reconstruction file
