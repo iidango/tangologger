@@ -31,8 +31,7 @@ THETA_CAMERA.height = 960
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="alignment script")
-    parser.add_argument("src_dir", help="path to src_dir to be processed")
-    parser.add_argument("dst_dir", help="path to dst_dir to be output")
+    parser.add_argument("data_dir", help="path to data_dir to be processed")
     parser.add_argument("video_fn", help="path to video")
     parser.add_argument("fps", type=float, default=3., nargs='?',help="output frame per second(default 3., 0 for max)")
     parser.add_argument("delay", type=float, default=0., nargs='?',help="video delay(default 0.)")
@@ -40,6 +39,8 @@ if __name__ == "__main__":
     parser.add_argument("-t", "--theta", default=False, action="store_true", help="theta video(rotate 180 degree)")
     parser.add_argument("-n", "--no_video", default=False, action="store_true", help="no video")
     args = parser.parse_args()
+
+    data_dir = args.data_dir
 
     if args.theta:
         rotate = math.pi
@@ -49,7 +50,7 @@ if __name__ == "__main__":
     # OUT_RECONSTRUCTION_FILENAME = "tangoCameraPose_tmp{}.json".format(args.delay)    # tmp
 
     # load cameraPose file
-    cameraPose_in_fn_list = glob.glob(os.path.join(args.src_dir, IN_CAMERAPOSE_FILENAME))
+    cameraPose_in_fn_list = glob.glob(os.path.join(data_dir, IN_CAMERAPOSE_FILENAME))
     reconstructions = []
     if args.theta:
         camera = THETA_CAMERA
@@ -65,6 +66,6 @@ if __name__ == "__main__":
             reconstructions.append(tangoPoseHandler.loadTangoPoseWithVideo(fn, camera, args.video_fn, args.fps, args.delay, args.max_frame_num, rotate))
 
     # save reconstruction file
-    recon_out_fn = os.path.join(args.dst_dir, OUT_RECONSTRUCTION_FILENAME)
+    recon_out_fn = os.path.join(args.data_dir, OUT_RECONSTRUCTION_FILENAME)
     reconstructionHandler.saveReconstructions(reconstructions, recon_out_fn)
 

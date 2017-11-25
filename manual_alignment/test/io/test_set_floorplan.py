@@ -22,8 +22,7 @@ TRAJECTORY_FILENAME = "2dtrajectory.csv"
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="alignment script")
-    parser.add_argument("src_dir", type=str, help="path to src_dir to be processed")
-    parser.add_argument("dst_dir", type=str, help="path to dst_dir to be output")
+    parser.add_argument("data_dir", type=str, help="path to data_dir to be processed")
     parser.add_argument("floorplan_fn", type=str, help="floorplan image name")
     parser.add_argument("rotx", nargs='?', type=float, help="x element of rotation vecrtor")
     parser.add_argument("roty", nargs='?', type=float, help="y element of rotation vecrtor")
@@ -34,6 +33,7 @@ if __name__ == "__main__":
     parser.add_argument("-m", "--meta", nargs='?', type=str, help="load meta yaml file")
 
     args = parser.parse_args()
+    data_dir = args.data_dir
     fp_name = os.path.basename(args.floorplan_fn)
     meta = args.meta
     if meta is None:
@@ -44,7 +44,7 @@ if __name__ == "__main__":
         tray = args.tray
         traz = args.traz
     else:
-        meta_fn = os.path.join(args.src_dir, meta)
+        meta_fn = os.path.join(data_dir, meta)
         mylogger.logger.info('load meta yaml file: {}'.format(meta_fn))
         with open(meta_fn, 'r') as f:
             data = yaml.load(f)
@@ -57,7 +57,7 @@ if __name__ == "__main__":
 
 
     # load reconstruction file
-    recon_in_fn = os.path.join(args.src_dir, IN_RECONSTRUCTION_FILENAME)
+    recon_in_fn = os.path.join(data_dir, IN_RECONSTRUCTION_FILENAME)
     reconstructions = reconstructionHandler.loadReconstruction(recon_in_fn)
 
     floorplan = types.Floorplan()
@@ -66,7 +66,7 @@ if __name__ == "__main__":
     # floorplan.metadata.pix_per_meter = args.ppm
     floorplan.metadata.pix_per_meter = 10.0    # fix
 
-    floorplan.set_dataroot(args.src_dir)
+    floorplan.set_dataroot(data_dir)
     fp_img = floorplan.get_img()
     floorplan.metadata.width = fp_img.shape[1]
     floorplan.metadata.height = fp_img.shape[0]
@@ -86,11 +86,11 @@ if __name__ == "__main__":
     shots_offset = np.identity(4, dtype=float)
     shots_offset[:3, :4] = tmp_reconstruction.metadata.shots_offset.get_Rt()
     reconstructionHandler.setOffset(tmp_reconstruction, shots_offset)
-    floorplanHandler.plotShotPoses(tmp_reconstruction.shots, floorplan, args.src_dir, "floorplan_trajectory.png")
-    floorplanHandler.save2DTrajectory(tmp_reconstruction.shots, floorplan, args.src_dir, TRAJECTORY_FILENAME)
+    floorplanHandler.plotShotPoses(tmp_reconstruction.shots, floorplan, data_dir, "floorplan_trajectory.png")
+    floorplanHandler.save2DTrajectory(tmp_reconstruction.shots, floorplan, data_dir, TRAJECTORY_FILENAME)
 
     # save reconstruction file
-    recon_out_fn = os.path.join(args.dst_dir, OUT_RECONSTRUCTION_FILENAME)
+    recon_out_fn = os.path.join(data_dir, OUT_RECONSTRUCTION_FILENAME)
     reconstructionHandler.saveReconstructions(reconstructions, recon_out_fn)
 
     # save parameters for yaml
@@ -104,7 +104,7 @@ if __name__ == "__main__":
     data[floorplan.id]['manual_alignment']['tray'] = args.tray
     data[floorplan.id]['manual_alignment']['traz'] = args.traz
     if meta is None:
-        meta_fn = os.path.join(args.dst_dir, 'meta.yaml')
+        meta_fn = os.path.join(data_dir, 'meta.yaml')
         with open(meta_fn, 'w') as f:
             f.write(yaml.dump(data, default_flow_style=False))
 

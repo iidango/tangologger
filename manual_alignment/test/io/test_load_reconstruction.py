@@ -18,12 +18,13 @@ OUT_RECONSTRUCTION_FILENAME = "reconstruction_tangoCameraPose_floor.json"
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="alignment script")
-    parser.add_argument("src_dir", help="path to src_dir to be processed")
-    parser.add_argument("dst_dir", help="path to dst_dir to be output")
+    parser.add_argument("data_dir", help="path to data_dir to be processed")
     args = parser.parse_args()
 
+    data_dir = args.data_dir
+
     # load reconstruction file
-    recon_in_fn = os.path.join(args.src_dir, IN_RECONSTRUCTION_FILENAME)
+    recon_in_fn = os.path.join(data_dir, IN_RECONSTRUCTION_FILENAME)
     reconstructions = reconstructionHandler.loadReconstruction(recon_in_fn)
 
     # ignore points
@@ -43,6 +44,6 @@ if __name__ == "__main__":
     reconstructionHandler.applyAll(reconstructions, reconstructionHandler.addAxisPoint)
 
     # save reconstruction file
-    recon_out_fn = os.path.join(args.dst_dir, OUT_RECONSTRUCTION_FILENAME)
+    recon_out_fn = os.path.join(data_dir, OUT_RECONSTRUCTION_FILENAME)
     reconstructionHandler.saveReconstructions(reconstructions, recon_out_fn)
 
