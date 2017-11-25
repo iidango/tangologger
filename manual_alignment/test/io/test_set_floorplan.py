@@ -55,7 +55,6 @@ if __name__ == "__main__":
         tray = data[fp_name]['manual_alignment']['tray']
         traz = data[fp_name]['manual_alignment']['traz']
 
-
     # load reconstruction file
     recon_in_fn = os.path.join(data_dir, IN_RECONSTRUCTION_FILENAME)
     reconstructions = reconstructionHandler.loadReconstruction(recon_in_fn)
@@ -79,7 +78,6 @@ if __name__ == "__main__":
 
     reconstructions[0].metadata.shots_offset = shots_offset
     reconstructions[0].add_floorplan(floorplan)
-
 
     # plot shots pose to floorlpan
     tmp_reconstruction = copy.deepcopy(reconstructions[0])
