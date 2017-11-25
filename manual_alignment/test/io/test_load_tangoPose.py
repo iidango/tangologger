@@ -11,6 +11,7 @@ sys.path.append(os.path.abspath('/grad/1/iida/mytools/python2.7/lib/python2.7/si
 import argparse
 import glob
 import math
+import yaml
 from utils import types
 from handler import tangoPoseHandler, reconstructionHandler
 import mylogger
@@ -32,22 +33,34 @@ THETA_CAMERA.height = 960
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="alignment script")
     parser.add_argument("data_dir", help="path to data_dir to be processed")
-    parser.add_argument("video_fn", help="path to video")
     parser.add_argument("fps", type=float, default=3., nargs='?',help="output frame per second(default 3., 0 for max)")
-    parser.add_argument("delay", type=float, default=0., nargs='?',help="video delay(default 0.)")
     parser.add_argument("max_frame_num", type=int, default=0, nargs='?',help="max frame num")
+    parser.add_argument("video_name", nargs='?', help="video name")
+    parser.add_argument("delay", type=float, default=0., nargs='?',help="video delay(default 0.)")
     parser.add_argument("-t", "--theta", default=False, action="store_true", help="theta video(rotate 180 degree)")
     parser.add_argument("-n", "--no_video", default=False, action="store_true", help="no video")
+    parser.add_argument("-m", "--meta", nargs='?', type=str, help="load meta yaml file")
+    parser.add_argument("-o", "--o_meta", nargs='?', type=str, help="output meta yaml file")
     args = parser.parse_args()
 
     data_dir = args.data_dir
+    fps = args.fps
+    max_frame_num = args.max_frame_num
 
-    if args.theta:
-        rotate = math.pi
-    else:
-        rotate = 0.0
+    meta = args.meta
+    o_meta = args.o_meta
+    if meta is not None:
+        meta_fn = os.path.join(data_dir, meta)
+        mylogger.logger.info('load meta yaml file: {}'.format(meta_fn))
+        with open(meta_fn, 'r') as f:
+            meta = yaml.load(f)
 
-    # OUT_RECONSTRUCTION_FILENAME = "tangoCameraPose_tmp{}.json".format(args.delay)    # tmp
+    video_name = args.video_name if args.video_name is not None else meta['video']['name']
+    delay = args.delay if args.delay is not None else meta['video']['delay']
+    rotate = math.pi if args.theta or meta['video']['theta'] else 0.
+
+    video_fn = os.path.join(data_dir, video_name)
+    print video_fn
 
     # load cameraPose file
     cameraPose_in_fn_list = glob.glob(os.path.join(data_dir, IN_CAMERAPOSE_FILENAME))
@@ -58,12 +71,12 @@ if __name__ == "__main__":
         camera = GEAR360_CAMERA
 
     for fn in cameraPose_in_fn_list:
-        if args.no_video or not os.path.exists(args.video_fn):
+        if args.no_video or not os.path.exists(video_fn):
             mylogger.logger.info('load tango pose without video')
-            reconstructions.append(tangoPoseHandler.loadTangoPose(fn, camera, args.fps))
+            reconstructions.append(tangoPoseHandler.loadTangoPose(fn, camera, fps))
         else:
-            mylogger.logger.info('load tango pose with video: {}'.format(args.video_fn))
-            reconstructions.append(tangoPoseHandler.loadTangoPoseWithVideo(fn, camera, args.video_fn, args.fps, args.delay, args.max_frame_num, rotate))
+            mylogger.logger.info('load tango pose with video: {}'.format(video_name))
+            reconstructions.append(tangoPoseHandler.loadTangoPoseWithVideo(fn, camera, video_fn, fps, delay, max_frame_num, rotate))
 
     # save reconstruction file
     recon_out_fn = os.path.join(args.data_dir, OUT_RECONSTRUCTION_FILENAME)
