@@ -31,12 +31,19 @@ if __name__ == "__main__":
     parser.add_argument("tray", nargs='?', type=float, help="y element of translation")
     parser.add_argument("traz", nargs='?', type=float, help="z element of translation")
     parser.add_argument("-m", "--meta", nargs='?', type=str, help="load meta yaml file")
+    parser.add_argument("-o", "--o_meta", nargs='?', type=str, help="output meta yaml file")
 
     args = parser.parse_args()
     data_dir = args.data_dir
     fp_name = os.path.basename(args.floorplan_fn)
     meta = args.meta
-    if meta is None:
+    o_meta = args.o_meta
+    if args.rotx is not None \
+            and args.roty is not None \
+            and args.rotz is not None \
+            and args.trax is not None \
+            and args.tray is not None \
+            and args.traz is not None:
         rotx = args.rotx
         roty = args.roty
         rotz = args.rotz
@@ -92,18 +99,26 @@ if __name__ == "__main__":
     reconstructionHandler.saveReconstructions(reconstructions, recon_out_fn)
 
     # save parameters for yaml
-    data = {}
-    data[floorplan.id] = {}
-    data[floorplan.id]['manual_alignment'] = {}
-    data[floorplan.id]['manual_alignment']['rotx'] = args.rotx
-    data[floorplan.id]['manual_alignment']['roty'] = args.roty
-    data[floorplan.id]['manual_alignment']['rotz'] = args.rotz
-    data[floorplan.id]['manual_alignment']['trax'] = args.trax
-    data[floorplan.id]['manual_alignment']['tray'] = args.tray
-    data[floorplan.id]['manual_alignment']['traz'] = args.traz
-    if meta is None:
-        meta_fn = os.path.join(data_dir, 'meta.yaml')
-        with open(meta_fn, 'w') as f:
+    if o_meta is not None:
+        o_meta_fn = os.path.join(data_dir, o_meta)
+        if meta is not None:
+            meta_fn = os.path.join(data_dir, meta)
+            mylogger.logger.info('update meta yaml file: {}'.format(meta_fn))
+            with open(meta_fn, 'r') as f:
+                data = yaml.load(f)
+        else:
+            data = {}
+
+        data[floorplan.id] = {}
+        data[floorplan.id]['manual_alignment'] = {}
+        data[floorplan.id]['manual_alignment']['rotx'] = rotx
+        data[floorplan.id]['manual_alignment']['roty'] = roty
+        data[floorplan.id]['manual_alignment']['rotz'] = rotz
+        data[floorplan.id]['manual_alignment']['trax'] = trax
+        data[floorplan.id]['manual_alignment']['tray'] = tray
+        data[floorplan.id]['manual_alignment']['traz'] = traz
+        with open(o_meta_fn, 'w') as f:
             f.write(yaml.dump(data, default_flow_style=False))
+        mylogger.logger.info('save meta yaml file: {}'.format(o_meta_fn))
 
 
