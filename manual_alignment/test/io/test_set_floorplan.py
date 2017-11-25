@@ -55,12 +55,12 @@ if __name__ == "__main__":
         mylogger.logger.info('load meta yaml file: {}'.format(meta_fn))
         with open(meta_fn, 'r') as f:
             data = yaml.load(f)
-        rotx = data[fp_name]['manual_alignment']['rotx']
-        roty = data[fp_name]['manual_alignment']['roty']
-        rotz = data[fp_name]['manual_alignment']['rotz']
-        trax = data[fp_name]['manual_alignment']['trax']
-        tray = data[fp_name]['manual_alignment']['tray']
-        traz = data[fp_name]['manual_alignment']['traz']
+        rotx = data['floorplans'][fp_name]['manual_alignment']['rotx']
+        roty = data['floorplans'][fp_name]['manual_alignment']['roty']
+        rotz = data['floorplans'][fp_name]['manual_alignment']['rotz']
+        trax = data['floorplans'][fp_name]['manual_alignment']['trax']
+        tray = data['floorplans'][fp_name]['manual_alignment']['tray']
+        traz = data['floorplans'][fp_name]['manual_alignment']['traz']
 
     # load reconstruction file
     recon_in_fn = os.path.join(data_dir, IN_RECONSTRUCTION_FILENAME)
@@ -109,14 +109,14 @@ if __name__ == "__main__":
         else:
             data = {}
 
-        data[floorplan.id] = {}
-        data[floorplan.id]['manual_alignment'] = {}
-        data[floorplan.id]['manual_alignment']['rotx'] = rotx
-        data[floorplan.id]['manual_alignment']['roty'] = roty
-        data[floorplan.id]['manual_alignment']['rotz'] = rotz
-        data[floorplan.id]['manual_alignment']['trax'] = trax
-        data[floorplan.id]['manual_alignment']['tray'] = tray
-        data[floorplan.id]['manual_alignment']['traz'] = traz
+        data['floorplans'][floorplan.id] = {}
+        data['floorplans'][floorplan.id]['manual_alignment'] = {}
+        data['floorplans'][floorplan.id]['manual_alignment']['rotx'] = rotx
+        data['floorplans'][floorplan.id]['manual_alignment']['roty'] = roty
+        data['floorplans'][floorplan.id]['manual_alignment']['rotz'] = rotz
+        data['floorplans'][floorplan.id]['manual_alignment']['trax'] = trax
+        data['floorplans'][floorplan.id]['manual_alignment']['tray'] = tray
+        data['floorplans'][floorplan.id]['manual_alignment']['traz'] = traz
         with open(o_meta_fn, 'w') as f:
             f.write(yaml.dump(data, default_flow_style=False))
         mylogger.logger.info('save meta yaml file: {}'.format(o_meta_fn))

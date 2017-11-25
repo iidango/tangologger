@@ -1,8 +1,9 @@
-tasc1_8000.png:
-  manual_alignment:
-    rotx: 0.0
-    roty: 0.0
-    rotz: 0.08
-    trax: -21.5
-    tray: -15.5
-    traz: 1.8
+floorplans:
+  tasc1_8000.png:
+    manual_alignment:
+      rotx: 0.0
+      roty: 0.0
+      rotz: 0.08
+      trax: -21.5
+      tray: -15.5
+      traz: 1.8
