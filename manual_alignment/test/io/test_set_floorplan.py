@@ -23,7 +23,7 @@ TRAJECTORY_FILENAME = "2dtrajectory.csv"
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="alignment script")
     parser.add_argument("data_dir", type=str, help="path to data_dir to be processed")
-    parser.add_argument("floorplan_fn", type=str, help="floorplan image name")
+    parser.add_argument("floorplan_fn", nargs='?', type=str, help="floorplan image name")
     parser.add_argument("rotx", nargs='?', type=float, help="x element of rotation vecrtor")
     parser.add_argument("roty", nargs='?', type=float, help="y element of rotation vecrtor")
     parser.add_argument("rotz", nargs='?', type=float, help="z element of rotation vecrtor")
@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     data_dir = args.data_dir
-    fp_name = os.path.basename(args.floorplan_fn)
+    fp_name = args.floorplan_fn
     meta = args.meta
     o_meta = args.o_meta
     if args.rotx is not None \
@@ -55,12 +55,16 @@ if __name__ == "__main__":
         mylogger.logger.info('load meta yaml file: {}'.format(meta_fn))
         with open(meta_fn, 'r') as f:
             data = yaml.load(f)
+        if fp_name is None:
+            fp_name = data['floorplans'].keys()[0]
         rotx = data['floorplans'][fp_name]['manual_alignment']['rotx']
         roty = data['floorplans'][fp_name]['manual_alignment']['roty']
         rotz = data['floorplans'][fp_name]['manual_alignment']['rotz']
         trax = data['floorplans'][fp_name]['manual_alignment']['trax']
         tray = data['floorplans'][fp_name]['manual_alignment']['tray']
         traz = data['floorplans'][fp_name]['manual_alignment']['traz']
+
+    mylogger.logger.info('align with {}'.format(fp_name))
 
     # load reconstruction file
     recon_in_fn = os.path.join(data_dir, IN_RECONSTRUCTION_FILENAME)
