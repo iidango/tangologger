@@ -25,7 +25,7 @@ tangoLogger/manual_alignment/test/io/test_set_floorplan.py
 Please check and run sample scripts  
 ```
 $ cd tangoLogger/manual_alignment/test/io/sh
-$ ./tasc1_8000_c.sh ../../../../sfu_sample_novideo/tasc1_8000/tasc1_8000_c
+$ ./manual_alignment.sh ../../../../sfu_sample_novideo/tasc1_8000/tasc1_8000_c
 ```
 Then you will find 2dtrajectory.csv, floorplan_trajectory.png etc. in sfu_sample_novideo/tasc1_8000/tasc1_8000_c  
 You can align trajactory by changing parameter in meta.yaml in DATA_DIR  
