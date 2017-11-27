@@ -46,6 +46,7 @@ if __name__ == "__main__":
     data_dir = args.data_dir
     fps = args.fps
     max_frame_num = args.max_frame_num
+    no_video = args.no_video
 
     meta = args.meta
     o_meta = args.o_meta
@@ -54,6 +55,13 @@ if __name__ == "__main__":
         mylogger.logger.info('load meta yaml file: {}'.format(meta_fn))
         with open(meta_fn, 'r') as f:
             meta = yaml.load(f)
+        if not 'video' in meta:
+            meta['video'] = {}
+            meta['video']['name'] = ''
+            meta['video']['delay'] = 0.0
+            meta['video']['theta'] = False
+            no_video = True
+
 
     video_name = args.video_name if args.video_name is not None else meta['video']['name']
     delay = args.delay if args.delay is not None else meta['video']['delay']
@@ -71,7 +79,7 @@ if __name__ == "__main__":
         camera = GEAR360_CAMERA
 
     for fn in cameraPose_in_fn_list:
-        if args.no_video or not os.path.exists(video_fn):
+        if no_video or not os.path.exists(video_fn):
             mylogger.logger.info('load tango pose without video')
             reconstructions.append(tangoPoseHandler.loadTangoPose(fn, camera, fps))
         else:
