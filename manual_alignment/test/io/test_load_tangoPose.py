@@ -36,7 +36,7 @@ if __name__ == "__main__":
     parser.add_argument("fps", type=float, default=3., nargs='?',help="output frame per second(default 3., 0 for max)")
     parser.add_argument("max_frame_num", type=int, default=0, nargs='?',help="max frame num")
     parser.add_argument("video_name", nargs='?', help="video name")
-    parser.add_argument("delay", type=float, default=0., nargs='?',help="video delay(default 0.)")
+    parser.add_argument("delay", type=float, nargs='?',help="video delay(default 0.)")
     parser.add_argument("-t", "--theta", default=False, action="store_true", help="theta video(rotate 180 degree)")
     parser.add_argument("-n", "--no_video", default=False, action="store_true", help="no video")
     parser.add_argument("-m", "--meta", nargs='?', type=str, help="load meta yaml file")
