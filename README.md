@@ -2,8 +2,8 @@
 
 Manual alignment scripts for tango logger
 
-### Manual alignment tango trajectory ###
-#### pull data from android device ####
+## Manual alignment tango trajectory ##
+### pull data from android device ###
 tangoLogger/misc/pullData.sh
 ```
 $ cd <DATA_DIR>
@@ -13,7 +13,23 @@ $ /path/to/pullData.sh <DATA_NAME>
 You should also put floorplan image(10 pix per meter) data to <DATA_DIR>  
 DATA_DIR/floorplans/FLOOR_NAME.png
 
-#### manual alignment ####
+### data format ###
+* cameraPose.csv
+Tango trajectory: timestamp(unixtime[sec]),x[m],y[m],z[m],rotQ1,rotQ2,rotQ3,rotQ4
+* wifi.csv
+wifi signal data: timestamp(unixtime[sec]),bssid,ssid,level(rssi),SeenTime  
+Current version of my app request wifi data every 100msec and record bssid, ssid, level, timestamp(ref. https://developer.android.com/reference/android/net/wifi/ScanResult.html).  
+We can change frequency if you want.  
+
+My app also collect sensores data below
+* android.sensor.accerometer.csv
+* android.sensor.gyroscope.csv
+* android.sensor.magnetic_field.csv
+* android.sensor.pressure.csv
+
+You can find alignment parameter in meta.yaml
+
+### manual alignment ###
 Please refer tangoLogger/manual_alignment/test/io/sh/tasc1_8000_c.sh
 
 1. load tango trajectory and create json file(It's necessary even if you don't have video)  
@@ -42,5 +58,5 @@ floorplans:
 ```
 rotations in radians and translations in meter  
 
-#### Other ####
+### Visualization ###
 You can also check 3D trajectory using viewer(modified version of https://github.com/mapillary/OpenSfM)
