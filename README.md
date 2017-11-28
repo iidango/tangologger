@@ -63,4 +63,12 @@ floorplans:
 rotations in radians and translations in meter  
 
 ### Visualization ###
-You can also check 3D trajectory using viewer(modified version of https://github.com/mapillary/OpenSfM)
+You can also check 3D trajectory using viewer(modified version of https://github.com/mapillary/OpenSfM)  
+
+1. Run local server  
+```
+$ python -m SimpleHTTPServer
+```
+
+2. Open html file in browser  
+http://localhost:8000/viewer/reconstruction.html#file=/sfu_sample_novideo/tasc1_8000/tasc1_8000_c/tangoCameraPose_floor.json
