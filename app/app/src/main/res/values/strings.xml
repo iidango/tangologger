@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright 2014 Google Inc.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<resources>
+    <!--<string name="app_name">Java Point Cloud</string>-->
+    <string name="app_name">My Logger</string>
+    <string name="app_name_long">Spherical Camera and Tango Logger</string>
+    <string name="first_person">First</string>
+    <string name="third_person">Third</string>
+    <string name="top_down">Top</string>
+    <string name="start">Start</string>
+    <string name="set_osc_v2">use OSCV2(for THETA S)</string>
+    <string name="time_synchronization">Time Synchronization(THETA)</string>
+    <string name="show_data">Show Data</string>
+    <string name="connecting">Connecting...</string>
+    <string name="success">Success!!</string>
+    <string name="failed">failed...</string>
+    <string name="auto_reset_on">Auto Reset On</string>
+    <string name="auto_reset_off">Auto Reset Off</string>
+
+    <string name="average_z">"Average depth (m): "</string>
+    <string name="point_count">"Point count: "</string>
+
+    <string name="exception_tango_error">"Tango Exception! Try again!"</string>
+    <string name="exception_tango_invalid">"Tango invalid exception! Try again!"</string>
+    <string name="exception_out_of_date">"Tango Service outdated!"</string>
+    <string name="motiontrackingpermission">"Motion Tracking permission needed!"</string>
+    <string name="na">"N/A"</string>
+    <string name="pose_initializing">"initializing"</string>
+    <string name="pose_valid">"valid"</string>
+    <string name="pose_invalid">"invalid"</string>
+    <string name="pose_unknown">"unknown"</string>
+    <string name="latest_adf_is">", Latest ADF is: "</string>
+
+    <string name="set_name_dialog_title">Set the file name</string>
+    <string name="file_saving">Saving File</string>
+    <string name="cancel">Cancel</string>
+    <string name="name">Name</string>
+    <string name="ok">OK</string>
+
+    <string name="arealearning_permission">"Area Learning permission needed!"</string>
+    <string name="learning_mode_off">"Drift correction off(view is not updated...)"</string>
+    <string name="learning_mode_on">"Drift correction on"</string>
+    <string name="gps_on">"GPS On"</string>
+    <string name="gps_off">"GPS Off"</string>
+    <string name="wifi_on">"WiFi On"</string>
+    <string name="wifi_off">"WiFi Off"</string>
+    <string name="record_movie_im_on">"Record movie immediately(THETA)"</string>
+    <string name="record_movie_im_off">"Record movie immediately Off(THETA)"</string>
+    <string name="start_config">Start</string>
+    <string name="relocalization_textview">Relocalization Status:</string>
+    <string name="no_uuid">"no ADFs"</string>
+    <string name="number_of_adfs">"No of ADFs: "</string>
+    <string name="tango_error">"Tango Exception! Try again!"</string>
+    <string name="tango_invalid">"Tango Invalid Exception! Try again!"</string>
+    <string name="tango_out_of_date_exception">"Tango Service outdated!"</string>
+    <string name="no_permissions">"Permission not granted!"</string>
+    <string name="relocalization_status">Relocalization Status:</string>
+    <string name="save_file">Save File</string>
+    <string name="save_file_failed_toast_format">"Failed to save File '%1$s'."</string>
+    <string name="save_file_success_toast_format">"Saved File '%1$s'."</string>
+
+    <!--spherical camera-->
+    <string name="theta_ip_address">192.168.1.1</string>
+    <string name="gear360_ip_address">192.168.107.1</string>
+    <string name="movie_recording_on">Movie Recording...</string>
+    <string name="movie_recording_off">Start Movie Recording(THETA)</string>
+    <string name="movie_recording_connect">Connecting Theta...</string>
+    <string name="log_view_text">Info: </string>
+    <string name="selected_file_view_text">File: </string>
+    <string name="select_file">Select File</string>
+
+    <!--Calibration-->
+    <string name="calibration">Calibration</string>
+    <string name="take_shot">Shot!</string>
+    <string name="camera_notconnected">not connected...</string>
+    <string name="image_size">Image Size</string>
+</resources>

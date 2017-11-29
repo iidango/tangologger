@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:labelFor="@string/app_name"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/btn_show_images"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Show Images" />
+
+    <LinearLayout
+        android:id="@+id/shoot_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp" >
+
+        <Button
+            android:id="@+id/btn_shot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/take_shot"
+            android:onClick="takeShotClicked"/>
+
+        <!--<TextView-->
+            <!--android:id="@+id/camera_status"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:layout_margin="5dp"-->
+            <!--android:text="@string/camera_notconnected"-->
+            <!--android:layout_weight="1"/>-->
+
+        <Spinner
+            android:id="@+id/select_camera_spinner"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+    <com.projecttango.java.logger.MJpegView
+        android:id="@+id/live_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+    <com.projecttango.java.logger.AutoFitTextureView
+        android:id="@+id/device_camera_view"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="7.32" />
+
+</LinearLayout>

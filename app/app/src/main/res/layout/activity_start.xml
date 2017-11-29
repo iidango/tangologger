@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:labelFor="@string/app_name"
+    android:orientation="vertical" >
+
+    <ToggleButton
+        android:id="@+id/use_gps"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:textOff="@string/gps_off"
+        android:textOn="@string/gps_on"
+        android:textSize="30sp"
+        android:onClick="useGPSClicked" />
+
+    <ToggleButton
+        android:id="@+id/use_wifi"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:textOff="@string/wifi_off"
+        android:textOn="@string/wifi_on"
+        android:textSize="30sp"
+        android:onClick="useWiFiClicked" />
+
+    <ToggleButton
+        android:id="@+id/record_movie_im"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:textOff="@string/record_movie_im_off"
+        android:textOn="@string/record_movie_im_on"
+        android:textSize="30sp"
+        android:onClick="recordMovieImClicked" />
+
+    <ToggleButton
+        android:id="@+id/learning_mode"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:textOff="@string/learning_mode_off"
+        android:textOn="@string/learning_mode_on"
+        android:textSize="30sp"
+        android:checked="true"
+        android:onClick="learningModeClicked" />
+
+    <Button
+        android:id="@+id/start"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="@string/start_config"
+        android:textSize="30sp"
+        android:onClick="startClicked" />
+
+    <Button
+        android:id="@+id/set_osc_v2"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="@string/set_osc_v2"
+        android:textSize="30sp"
+        android:onClick="setOscv2Clicked" />
+
+    <Button
+        android:id="@+id/time_synchronization"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="@string/time_synchronization"
+        android:textSize="30sp"
+        android:onClick="timeSynchronizationClicked" />
+
+    <Button
+        android:id="@+id/show_data"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="@string/show_data"
+        android:textSize="30sp"
+        android:onClick="showDataClicked" />
+    <Button
+        android:id="@+id/calibration"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="@string/calibration"
+        android:textSize="30sp"
+        android:onClick="CalibrationClicked" />
+
+</LinearLayout>
