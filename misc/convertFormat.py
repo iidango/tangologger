@@ -66,5 +66,5 @@ if __name__ == "__main__":
                 ap_dic[bssid].append(timestamp_seen)
                 # timestamp_seen = float(timestamp_seen)/(10**6)    # sec to microsec
 
-                out_f.write('{}\t{}\t{}\n'.format(timestamp_seen, ssid, level))
+                out_f.write('{}\t{}\t{}\n'.format(timestamp_seen, bssid, level))
     print('save {}'.format(out_wifi_fn))
