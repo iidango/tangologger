@@ -65,7 +65,8 @@ if __name__ == "__main__":
 
     video_name = args.video_name if args.video_name is not None else meta['video']['name']
     delay = args.delay if args.delay is not None else meta['video']['delay']
-    rotate = math.pi if args.theta or meta['video']['theta'] else 0.
+    is_theta = True if args.theta or meta['video']['theta'] else False
+    rotate = math.pi if is_theta else 0.
 
     video_fn = os.path.join(data_dir, video_name)
     print video_fn
@@ -73,7 +74,7 @@ if __name__ == "__main__":
     # load cameraPose file
     cameraPose_in_fn_list = glob.glob(os.path.join(data_dir, IN_CAMERAPOSE_FILENAME))
     reconstructions = []
-    if args.theta:
+    if is_theta:
         camera = THETA_CAMERA
     else:
         camera = GEAR360_CAMERA
