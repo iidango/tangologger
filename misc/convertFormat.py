@@ -59,8 +59,7 @@ if __name__ == "__main__":
                 # skip duplicated scan
                 if bssid not in ap_dic:
                     ap_dic[bssid] = []
-                    ap_dic[bssid].append(timestamp_seen)
-                if ap_dic[bssid][-1] == timestamp_seen:
+                if len(ap_dic[bssid]) != 0 and ap_dic[bssid][-1] == timestamp_seen:
                     continue
 
                 ap_dic[bssid].append(timestamp_seen)
