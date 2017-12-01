@@ -22,6 +22,14 @@ My app also collect sensores data below
 
 You can find alignment parameter in meta.yaml  
 
+### pull data from android device ###
+To convert data format to tab splited format, please run misc/convertFormat.py  
+```
+$ python misc/convertFormat.py sfu_sample_novideo/tasc1_8000/tasc1_8000_c
+```
+
+Then, you will find pose.txt and wifi.txt in sfu_sample_novideo/tasc1_8000/tasc1_8000_c  
+
 ## Manual alignment tango trajectory ##
 ### pull data from android device ###
 tangoLogger/misc/pullData.sh
