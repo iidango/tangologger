@@ -150,8 +150,8 @@ public class PositionViewActivity extends Activity implements
     private WiFiData mWiFiData;
     private WifiManager mWiFiManager;
     private Thread mWiFiLogThread;
-    private static final int UPDATE_WIFI_INTERVAL = 500; // msec
-    private static final int MAX_WIFILOG_NUM = 50;
+    private static final int UPDATE_WIFI_INTERVAL = 1000; // msec
+    private static final int MAX_WIFILOG_NUM = 0; // 0 for all
     private Timer mWiFiTimer;
     private TimerTask mWiFiTimerTask;
 
@@ -909,7 +909,7 @@ public class PositionViewActivity extends Activity implements
                         mWiFiData.addTime(ap.timestamp);
 
                         cnt++;
-                        if (cnt >= MAX_WIFILOG_NUM){
+                        if (MAX_WIFILOG_NUM != 0 && cnt >= MAX_WIFILOG_NUM){
                             break;
                         }
                     }
