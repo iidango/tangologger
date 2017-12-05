@@ -48,7 +48,7 @@ Please refer tangoLogger/manual_alignment/test/io/sh/tasc1_8000_c.sh
 tangoLogger/manual_alignment/test/io/test_load_tangoPose.py
 
 2. align trajectory with floorplan image  
-tangoLogger/manual_alignment/test/io/test_set_floorplan.py  
+tangoLogger/manual_alignment/test/io/test_plot_trajectorys.py  
 
 Please check and run sample scripts  
 ```

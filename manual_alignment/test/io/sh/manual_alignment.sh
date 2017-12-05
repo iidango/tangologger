@@ -4,4 +4,4 @@
 PREFIX=$1
 
 python ../test_load_tangoPose.py $PREFIX -m meta.yaml
-python ../test_set_floorplan.py $PREFIX -m meta.yaml
+python ../test_plot_trajectorys.py $PREFIX

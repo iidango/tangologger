@@ -1,11 +1,10 @@
 """Basic types for building a reconstruction."""
 
-import csv
-import os
-
-import cv2
 import numpy as np
-
+import cv2
+import os
+import csv
+import glob
 import mylogger
 
 
@@ -747,14 +746,12 @@ class Trajectory(object):
       shots   (List(Shot)): List of shots.
     """
 
-    def __init__(self, id='', shots=[]):
+    def __init__(self):
         """Defaut constructor.
 
-        :param str id:
-        :param List(Shot) shots:
         """
-        self.id = id
-        self.shots = shots
+        self.id = ''
+        self.shots = []
 
     def add_shot(self, shot):
         """
@@ -765,11 +762,10 @@ class Trajectory(object):
 
     def get_ShotsDict(self):
         """
-
         :return Dict(Shot) shots:
         """
         shots = {}
-        for s in shots:
+        for s in self.shots:
             shots[s.id] = s
         return shots
 

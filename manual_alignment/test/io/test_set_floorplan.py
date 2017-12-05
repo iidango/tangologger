@@ -21,7 +21,7 @@ OUT_RECONSTRUCTION_FILENAME = "tangoCameraPose_floor.json"
 TRAJECTORY_FILENAME = "2dtrajectory.csv"
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="alignment script")
+    parser = argparse.ArgumentParser(description="set floorplan ")
     parser.add_argument("data_dir", type=str, help="path to data_dir to be processed")
     parser.add_argument("floorplan_fn", nargs='?', type=str, help="floorplan image name")
     parser.add_argument("rotx", nargs='?', type=float, help="x element of rotation vecrtor")
