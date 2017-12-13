@@ -91,6 +91,7 @@ public class WiFiData extends SensorData{
 
     @Override
     public boolean save(String fn, int digits, double offset){
+        save(fn.substring(0, fn.lastIndexOf(".")) + "_upt.csv");
         for (int i = 0; i < sizeTimestamp(); i++){
             double t = this.mTimestamp.get(i);
             this.mTimestamp.set(i, t*Math.pow(10, digits) + offset);

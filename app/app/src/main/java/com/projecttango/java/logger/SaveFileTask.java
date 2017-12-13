@@ -8,9 +8,9 @@ import com.google.atap.tangoservice.TangoPoseData;
 import com.projecttango.tangosupport.TangoSupport;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import static android.os.SystemClock.elapsedRealtime;
+import static java.lang.System.currentTimeMillis;
 
 /**
  * Saves the trajectory on a background thread and shows a progress dialog while
@@ -105,7 +105,7 @@ public class SaveFileTask extends AsyncTask<Void, Integer, Boolean> {
 
             // save files(UNIX time(sec))
             // calc offset between systemStart and unixTime
-            double systemStartedAt = (double) ((new Date()).getTime() - elapsedRealtime ())/1000;
+            double systemStartedAt = (double) (currentTimeMillis() - elapsedRealtime ())/1000;
             // save trajectory data
             cameraPoseDataOutPut.save(mFileName + "_cameraPose.csv", 0, systemStartedAt);
             // save sensor datas
