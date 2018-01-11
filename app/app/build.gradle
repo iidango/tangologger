@@ -25,7 +25,7 @@ android {
 
 
 dependencies {
-    apply from: '../../version.gradle'
+    apply from: './version.gradle'
     compile "com.google.tango:sdk-base:${release_version}"
     compile "com.google.tango:support-base:${release_version}"
     compile "org.rajawali3d:rajawali:1.0.325@aar"
