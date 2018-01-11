@@ -76,30 +76,29 @@
         android:text="@string/third_person"
         android:onClick="onThirdPersonClicked"/>
 
-    <Button
-        android:id="@+id/movie_recording_button"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
-        android:textSize="15sp"
-        android:text="@string/movie_recording_off"
-        android:layout_above="@+id/save_file_button"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/first_person_button"
-        android:onClick="onMovieRecordingClicked"/>
-
 
     <Button
         android:id="@+id/save_file_button"
         style="?android:attr/buttonStyleSmall"
+        android:text="@string/save_file"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:layout_above="@+id/movie_recording_button"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/first_person_button"
+        android:onClick="saveFileClicked"/>
+
+    <Button
+        android:id="@+id/movie_recording_button"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="5dp"
         android:layout_marginRight="5dp"
-        android:text="@string/save_file"
-        android:onClick="saveFileClicked"/>
-
+        android:textSize="15sp"
+        android:text="@string/movie_recording_off"
+        android:onClick="onMovieRecordingClicked"/>
 
 </RelativeLayout>

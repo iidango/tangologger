@@ -435,7 +435,8 @@ public class PositionViewActivity extends Activity implements
                 orientation[0] + ", " + orientation[1] + ", " +
                 orientation[2] + ", " + orientation[3]);
 
-        Log.i(TAG, stringBuilder.toString());
+//        Log.i(TAG, stringBuilder.toString());
+        showLog(stringBuilder.toString());
     }
 
     /**
@@ -833,8 +834,8 @@ public class PositionViewActivity extends Activity implements
                     return;
                 }
                 mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, UPDATE_GPS_INTERVAL, UPDATE_GPS_DIST, this);
-                showLog("Location Lgging Run!!");
-                Log.i(TAG, "location Lgging Run!!");
+//                showLog("Location Loging Run!!");
+//                Log.i(TAG, "location Loging Run!!");
             } catch (Exception e) {
                 e.printStackTrace();
 

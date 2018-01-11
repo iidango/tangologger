@@ -35,6 +35,7 @@ import org.rajawali3d.surface.RajawaliSurfaceView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Main Activity class for visualizing log data.
@@ -166,12 +167,12 @@ public class ShowDataActivity extends Activity{
     public void selectFileClicked(View view) {
         // create candiate file list
         File dir = new File(DATA_PATH);
-        File[] files = dir.listFiles();
         mFileList = dir.listFiles();
+        Collections.sort(mFileIndex);
         ArrayList<String> file_names = new ArrayList<>();
         mFileIndex = new ArrayList<>();
-        for (int i = 0; i < files.length; i++) {
-            File file = files[i];
+        for (int i = 0; i < mFileList.length; i++) {
+            File file = mFileList[i];
             if (file.getName().endsWith(CAMERAPOSE_LOG_FILE)) {
                 file_names.add(file.getName());
                 mFileIndex.add(i);

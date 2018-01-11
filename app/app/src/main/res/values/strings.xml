@@ -21,9 +21,9 @@
     <string name="first_person">First</string>
     <string name="third_person">Third</string>
     <string name="top_down">Top</string>
-    <string name="start">Start</string>
+    <string name="start">Start Sensing</string>
     <string name="set_osc_v2">use OSCV2(for THETA S)</string>
-    <string name="time_synchronization">Time Synchronization(THETA)</string>
+    <string name="time_synchronization">Time Sync(THETA)</string>
     <string name="show_data">Show Data</string>
     <string name="connecting">Connecting...</string>
     <string name="success">Success!!</string>
@@ -60,7 +60,7 @@
     <string name="wifi_off">"WiFi Off"</string>
     <string name="record_movie_im_on">"Record movie immediately(THETA)"</string>
     <string name="record_movie_im_off">"Record movie immediately Off(THETA)"</string>
-    <string name="start_config">Start</string>
+    <string name="start_config">Start Sensing</string>
     <string name="relocalization_textview">Relocalization Status:</string>
     <string name="no_uuid">"no ADFs"</string>
     <string name="number_of_adfs">"No of ADFs: "</string>
