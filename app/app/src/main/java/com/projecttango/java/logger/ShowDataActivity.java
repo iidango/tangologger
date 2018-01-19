@@ -35,7 +35,6 @@ import org.rajawali3d.surface.RajawaliSurfaceView;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Main Activity class for visualizing log data.
@@ -168,7 +167,11 @@ public class ShowDataActivity extends Activity{
         // create candiate file list
         File dir = new File(DATA_PATH);
         mFileList = dir.listFiles();
-        Collections.sort(mFileIndex);
+        java.util.Arrays.sort(mFileList, new java.util.Comparator<File>() {
+            public int compare(File file1, File file2){
+                return - file1.getName().compareTo(file2.getName());
+            }
+        });
         ArrayList<String> file_names = new ArrayList<>();
         mFileIndex = new ArrayList<>();
         for (int i = 0; i < mFileList.length; i++) {
