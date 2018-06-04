@@ -16,3 +16,6 @@
 __pycache__/
 data/
 log/
+
+# add data
+!sfu_sample_novideo/**
