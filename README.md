@@ -22,7 +22,7 @@ My app also collect sensores data below
 
 You can find alignment parameter in meta.yaml  
 
-### pull data from android device ###
+### convert data to tab splited format ###
 To convert data format to tab splited format, please run misc/convertFormat.py  
 ```
 $ python misc/convertFormat.py sfu_sample_novideo/tasc1_8000/tasc1_8000_c
