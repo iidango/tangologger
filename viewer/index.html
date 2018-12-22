@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Reconstruction Viewer</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="css/reconstruction.css">
+    </head>
+    <body>
+        <div id="ThreeJS" target="_blank"></div>
+        <div id="loading">
+            <img src="images/preloader.gif">
+        </div>
+        <div id="info">
+            <img id="image" onclick="changeMovingMode(MOVINGMODE.WALK)">
+            <div id="image_text"></div>
+        </div>
+        <div id="operation">
+            <button onclick="setTrackColorDifferent()">
+                set different color for tracks
+            </button>
+        </div>
+
+        <script src="js/lib/jquery.js"></script>
+        <script src="js/lib/jquery.csv.js"></script>
+        <script src="js/lib/three.js"></script>
+        <script src="js/lib/OrbitControls.js"></script>
+        <script src="js/lib/TrackballControls.js"></script>
+        <script src="js/lib/dat.gui.js"></script>
+        <script src="js/lib/journey.js"></script>
+
+        <script src="js/globals.js"></script>
+        <script src="js/model.js"></script>
+        <script src="js/ui.js"></script>
+        <script src="js/utils.js"></script>
+        <script src="js/renderer.js"></script>
+
+    </body>
+</html>

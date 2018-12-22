@@ -56,7 +56,7 @@ if __name__ == "__main__":
         with open(meta_fn, 'r') as f:
             data = yaml.load(f)
         if fp_name is None:
-            fp_name = data['floorplans'].keys()[0]
+            fp_name = list(data['floorplans'].keys())[0]
         rotx = data['floorplans'][fp_name]['manual_alignment']['rotx']
         roty = data['floorplans'][fp_name]['manual_alignment']['roty']
         rotz = data['floorplans'][fp_name]['manual_alignment']['rotz']
@@ -76,14 +76,12 @@ if __name__ == "__main__":
     # floorplan.metadata.pix_per_meter = args.ppm
     floorplan.metadata.pix_per_meter = 10.0    # fix
 
-    floorplan.set_dataroot(data_dir)
+    floorplan.set_dataroot(os.path.join(data_dir, 'floorplans'))
     fp_img = floorplan.get_img()
     floorplan.metadata.width = fp_img.shape[1]
     floorplan.metadata.height = fp_img.shape[0]
 
     shots_offset = types.Pose()
-    # shots_offset.rotation = np.array([0, 0, 1.635])
-    # shots_offset.translation = np.array([15.5, -21.5, 1.5])
     shots_offset.rotation = np.array([rotx, roty, rotz])
     shots_offset.translation = np.array([trax, tray, traz])
 
@@ -95,8 +93,8 @@ if __name__ == "__main__":
     shots_offset = np.identity(4, dtype=float)
     shots_offset[:3, :4] = tmp_reconstruction.metadata.shots_offset.get_Rt()
     reconstructionHandler.setOffset(tmp_reconstruction, shots_offset)
-    floorplanHandler.plotShotPoses(tmp_reconstruction.shots, floorplan, data_dir, "floorplan_trajectory.png")
-    floorplanHandler.save2DTrajectory(tmp_reconstruction.shots, floorplan, data_dir, TRAJECTORY_FILENAME)
+    # floorplanHandler.plotShotPoses(tmp_reconstruction.shots, floorplan, data_dir, "floorplan_trajectory.png")
+    # floorplanHandler.save2DTrajectory(tmp_reconstruction.shots, floorplan, data_dir, TRAJECTORY_FILENAME)
 
     # save reconstruction file
     recon_out_fn = os.path.join(data_dir, OUT_RECONSTRUCTION_FILENAME)

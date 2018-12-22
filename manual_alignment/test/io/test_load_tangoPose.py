@@ -39,7 +39,7 @@ if __name__ == "__main__":
     parser.add_argument("delay", type=float, nargs='?',help="video delay")
     parser.add_argument("-t", "--theta", default=False, action="store_true", help="theta video(rotate 180 degree)")
     parser.add_argument("-n", "--no_video", default=False, action="store_true", help="no video")
-    parser.add_argument("-m", "--meta", nargs='?', type=str, help="load meta yaml file")
+    parser.add_argument("-m", "--meta", nargs='?', type=str, default='meta.yaml', help="load meta yaml file(default: meta.yaml)")
     parser.add_argument("-o", "--o_meta", nargs='?', type=str, help="output meta yaml file")
     args = parser.parse_args()
 
@@ -67,9 +67,11 @@ if __name__ == "__main__":
     delay = args.delay if args.delay is not None else meta['video']['delay']
     is_theta = True if args.theta or meta['video']['theta'] else False
     rotate = math.pi if is_theta else 0.
+    video_range = None if 'start' not in meta['video'] else [meta['video']['start'], meta['video']['end']]
+    if video_range is not None:
+        mylogger.logger.info('video range: {}'.format(video_range))
 
     video_fn = os.path.join(data_dir, video_name)
-    print video_fn
 
     # load cameraPose file
     cameraPose_in_fn_list = glob.glob(os.path.join(data_dir, IN_CAMERAPOSE_FILENAME))
@@ -85,7 +87,7 @@ if __name__ == "__main__":
             reconstructions.append(tangoPoseHandler.loadTangoPose(fn, camera, fps))
         else:
             mylogger.logger.info('load tango pose with video: {}'.format(video_name))
-            reconstructions.append(tangoPoseHandler.loadTangoPoseWithVideo(fn, camera, video_fn, fps, delay, max_frame_num, rotate))
+            reconstructions.append(tangoPoseHandler.loadTangoPoseWithVideo(fn, camera, video_fn, fps, delay, max_frame_num, rotate, video_range))
 
     # save reconstruction file
     recon_out_fn = os.path.join(args.data_dir, OUT_RECONSTRUCTION_FILENAME)

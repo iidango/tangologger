@@ -22,11 +22,17 @@ body {
     width: 160px;
     height: 120px;
 }
-#text {
+#image_text {
     text-align: center;
     font-family: sans-serif;
     font-size: 10px;
     color: #FFF;
+}
+#operation {
+    position: absolute;
+    top: 0px;
+    left: 180px;
+    /* background-color: #000; */
 }
 #navigation {
     position: absolute;

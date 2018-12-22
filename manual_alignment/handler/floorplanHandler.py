@@ -4,6 +4,8 @@
 import csv
 import os
 import cv2
+import numpy as np
+import math
 
 import mylogger
 
@@ -55,7 +57,12 @@ def save2DTrajectory(shots, floorplan, dataset_path, out_fn):
         pose = shots[shot].pose
         # load and convert to image coordinate
         x, y = floorplan.pose2pix(pose)
-        datas.append((shot, x, y, shots[shot].metadata.capture_time))
+        z = floorplan.heightInMeter(pose)
+
+        r_vec = shots[shot].viewing_direction()
+        angle_rad = np.arctan2(r_vec[0], r_vec[1])
+
+        datas.append((shot, x, y, shots[shot].metadata.capture_time, z, angle_rad))
     datas.sort()
 
     with open(os.path.join(dataset_path, out_fn), 'w') as f:

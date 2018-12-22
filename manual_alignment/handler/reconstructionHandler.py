@@ -34,7 +34,8 @@ def saveReconstructions(reconstructions, fn):
     :type reconstructions: list[scripts.myopensfm.types.Reconstruction]
     :type fn: str
     """
-    with open(fn, 'wb') as f:
+    # with open(fn, 'wb') as f:
+    with open(fn, 'w') as f:    # for python3
         mylogger.logger.info("saving " + fn)
         obj = io.reconstructions_to_json(reconstructions)
         io.json_dump(obj, f)
@@ -91,6 +92,50 @@ def setOffset(reconstruction, rt):
     for s in reconstruction.shots:
         shot = reconstruction.shots[s]
         shot.pose.transposeWorldCoordinate(rt, inv = True)
+
+def subsampleShot(reconstruction, num):
+    """
+    :type reconstruction: scripts.myopensfm.types.Reconstruction
+    :type num: sampling number
+    """
+
+    s_list = []
+    for s in reconstruction.shots:
+        shot = reconstruction.shots[s]
+        s_list.append(shot)
+
+    s_list.sort(key=lambda x:x.id)
+    s_list = s_list[::num]
+
+    reconstruction.shots = {}
+    for s in s_list:
+        reconstruction.add_shot(s)
+
+def setExpandAxis(reconstruction, scale_xyz):
+    """
+    
+    :type reconstruction: scripts.myopensfm.types.Reconstruction
+    :type rt: numpy.array
+    """
+
+    for s in reconstruction.shots:
+        shot = reconstruction.shots[s]
+        xyz = shot.pose.getXYZ()
+        rt = np.array([[1, 0, 0, xyz[0] * (scale_xyz[0]-1)],
+                       [0, 1, 0, xyz[1] * (scale_xyz[1]-1)],
+                       [0, 0, 1, xyz[2] * (scale_xyz[2]-1)],
+                       [0, 0, 0, 1]], dtype=float)
+        shot.pose.transposeWorldCoordinate(rt)
+        # break
+
+    for f in reconstruction.floorplans:
+        floorplan = reconstruction.floorplans[f]
+        xyz = floorplan.pose.getXYZ()
+        rt = np.array([[1, 0, 0, xyz[0] * (scale_xyz[0]-1)],
+                       [0, 1, 0, xyz[1] * (scale_xyz[1]-1)],
+                       [0, 0, 1, xyz[2] * (scale_xyz[2]-1)],
+                       [0, 0, 0, 1]], dtype=float)
+        floorplan.pose.transposeWorldCoordinate(rt)
 
 def applyAll(reconstructions, func):
     """

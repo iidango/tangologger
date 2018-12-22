@@ -29,6 +29,7 @@ $ python misc/convertFormat.py sfu_sample_novideo/tasc1_8000/tasc1_8000_c
 ```
 
 Then, you will find pose.txt and wifi.txt in sfu_sample_novideo/tasc1_8000/tasc1_8000_c  
+This conversion is not needed for my tools.
 
 ## Manual alignment tango trajectory ##
 ### pull data from android device ###
@@ -53,9 +54,9 @@ tangoLogger/manual_alignment/test/io/test_plot_trajectorys.py
 Please check and run sample scripts  
 ```
 $ cd tangoLogger/manual_alignment/test/io/sh
-$ ./manual_alignment.sh ../../../../sfu_sample_novideo/tasc1_8000/tasc1_8000_c
+$ ./manual_alignment.sh ../../../../data/datasets/tasc1_8000_c
 ```
-Then you will find 2dtrajectory.csv, floorplan_trajectory.png etc. in sfu_sample_novideo/tasc1_8000/tasc1_8000_c  
+Then you will find 2dtrajectory.csv, trajectory_tasc1_8000.png etc. in data/datasets/tasc1_8000/tasc1_8000_c  
 You can align trajactory by changing parameter in meta.yaml in DATA_DIR  
 ```
 floorplans:
@@ -70,13 +71,27 @@ floorplans:
 ```
 rotations in radians and translations in meter  
 
+### multiple data alignment ###
+Multiple data alignment sample is in tangoLogger/data/floorplan_alignment.yaml(containing only floorplans) and tangoLogger/data/tasc1.yaml  
+Please run below script to create json file for visualization.
+
+```
+./multiple_alignment.sh ../../../../data/tasc1
+```
+
+Then you will get tangoLogger/data/tasc1.json.  
+
 ### Visualization ###
 You can also check 3D trajectory using viewer(modified version of https://github.com/mapillary/OpenSfM)  
 
 1. Run local server  
 ```
-$ python -m SimpleHTTPServer
+$ python -m SimpleHTTPServer # python2
+```
+or 
+```
+$ python -m http.server # python3
 ```
 
 2. Open html file in browser  
-http://localhost:8000/viewer/reconstruction.html#file=/sfu_sample_novideo/tasc1_8000/tasc1_8000_c/tangoCameraPose_floor.json
+http://localhost:8000/viewer/index.html#file=/data/datasets/tasc1_8000_c/tangoCameraPose_floor.json

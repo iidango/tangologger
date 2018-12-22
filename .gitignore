@@ -16,6 +16,8 @@
 __pycache__/
 data/
 log/
+.vscode/
+manual_alignment/test/io/sh/log/
 
 # add data
-!sfu_sample_novideo/**
+!data/**

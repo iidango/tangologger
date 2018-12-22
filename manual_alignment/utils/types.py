@@ -135,6 +135,19 @@ class Pose(object):
         self.set_rotation_matrix(transposed[:3,:3])
         self.translation = transposed[:3, 3].T
 
+    def transpose(self, rt):
+        """
+        :type pose: scripts.myopensfm.types.pose
+        :type rt: numpy.array
+        :type inv: bool
+        :rtype new_pose: scripts.myopensfm.types.pose
+        """
+
+        transposed = np.dot(rt, self.get_Rt4())
+
+        self.set_rotation_matrix(transposed[:3,:3])
+        self.translation = transposed[:3, 3].T
+
 class ShotMetadata(object):
     """Defines GPS data from a taken picture.
 
@@ -524,9 +537,6 @@ class Floorplan(object):
         self.pose = None
         self.metadata = FloorplanMetadata()
 
-    def get_file_path(self):
-        return os.path.join('floorplans', self.id)
-
     def set_dataroot(self, dataroot):
         self.metadata.dataroot = dataroot
 
@@ -540,7 +550,7 @@ class Floorplan(object):
         if dataroot_dir is None:
             dataroot_dir = self.metadata.dataroot
 
-        fn = os.path.join(dataroot_dir, self.get_file_path())
+        fn = os.path.join(dataroot_dir, self.id)
         return cv2.imread(fn)
 
     def pose2pix(self, pose):
@@ -554,6 +564,20 @@ class Floorplan(object):
         y = self.metadata.height/2 - int(self.metadata.pix_per_meter * xyz[1])
 
         return (int(x), int(y))
+
+    def heightInMeter(self, pose):
+        """
+        return height from horizon of the floorplan
+        memo: 3d coordinate system is in meter
+        :param Pose pose:
+        :return double z:
+        """
+        xyz = pose.transform_inverse(np.array([0, 0, 0]))
+        horizon = self.pose.transform_inverse(np.array([0, 0, 0]))[0]
+        # load and convert to image coordinate
+        z = xyz[2] - horizon
+
+        return z
 
     def pix2coord(self, pix):
         """
@@ -618,6 +642,7 @@ class ReconstructionMetadata(object):
 
     Attributes:
         name (str): name.
+        prefix (str): prefix.
         offset (Pose): world coordinate off set.
         shots_offset (Pose): shots off set.
         points_offset (Pose): pointss off set.
@@ -628,6 +653,7 @@ class ReconstructionMetadata(object):
 
     def __init__(self):
         self.name = ""
+        self.prefix = ""
         self.offset = Pose()
         self.shots_offset = Pose()
         self.points_offset = Pose()

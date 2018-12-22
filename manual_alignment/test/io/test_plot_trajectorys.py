@@ -25,6 +25,9 @@ if __name__ == "__main__":
     parser.add_argument("-r", "--show_ref", default=True, action="store_false", help="show reference trac(default True)")
     parser.add_argument("-w", "--plot_whole_trajectory", default=True, action="store_false", help="plot whole trajectory(default True)")
 
+    # TODO
+    print('TODO!!!! z coord in trajctory csv might be strange when set manual alignment rot y!!!!!')
+
     args = parser.parse_args()
     data_dir = args.data_dir
     meta = args.meta
@@ -56,7 +59,7 @@ if __name__ == "__main__":
         floorplan.id = fp_name
         floorplan.pose = types.Pose(translation=np.array([0, 0, 0]))
         floorplan.metadata.pix_per_meter = 10.0    # fix
-        floorplan.set_dataroot(data_dir)
+        floorplan.set_dataroot(os.path.join(data_dir, 'floorplans'))
         fp_img = floorplan.get_img()
         floorplan.metadata.width = fp_img.shape[1]
         floorplan.metadata.height = fp_img.shape[0]
@@ -80,7 +83,7 @@ if __name__ == "__main__":
                 t = s.metadata.capture_time - t0
                 image_num = int(s.id.split('.')[0])
                 for clip in clips_t:
-                    if (clip['start'] < t) and ((clip['end'] > t) if clip['end'] != -1 else True):
+                    if (clip['start'] <= t) and ((clip['end'] > t) if clip['end'] != -1 else True):
                         target_shots_id.append(s.id)
                 for clip in clips_i:
                     if (image_num < int(clip['start'])) and ((int(clip['end']) > image_num) if clip['end'] != -1 else True):
@@ -89,7 +92,6 @@ if __name__ == "__main__":
         shots_offset = types.Pose()
         shots_offset.rotation = np.array([rotx, roty, rotz])
         shots_offset.translation = np.array([trax, tray, traz])
-
 
         # plot shots pose to floorlpan
         tmp_reconstruction = copy.deepcopy(reconstructions[0])
@@ -107,15 +109,21 @@ if __name__ == "__main__":
         floorplanHandler.plotShotPoses(target_shots, floorplan, data_dir, 'trajectory_{}.png'.format(fp_name.split('.')[0]), no_target_shots)
         floorplanHandler.save2DTrajectory(target_shots, floorplan, data_dir, '2dtrajectory_{}.csv'.format(fp_name.split('.')[0]))
 
-        if plot_whole_trajectory:
-            whole_trajectory = types.Trajectory()
-            for shot in tmp_reconstruction.shots:
-                whole_trajectory.add_shot(tmp_reconstruction.shots[shot])
-            whole_trajectory.sort()
-            whole_trajectory.setToTopLeft(floorplan)
+    if plot_whole_trajectory:
+        tmp_reconstruction = copy.deepcopy(reconstructions[0])
+        shots_offset = types.Pose()
+        shots_offset.rotation = np.array([rotx, roty, rotz])
+        shots_offset.translation = np.array([0.0, 0.0, 0.0])
+        offset = np.identity(4, dtype=float)
+        offset[:3, :4] = shots_offset.get_Rt()
+        reconstructionHandler.setOffset(tmp_reconstruction, offset)
 
-            floorplanHandler.save2DTrajectory(whole_trajectory.get_ShotsDict(), floorplan, data_dir, '2dtrajectory.csv')
+        whole_trajectory = types.Trajectory()
+        for shot in tmp_reconstruction.shots:
+            whole_trajectory.add_shot(tmp_reconstruction.shots[shot])
+        whole_trajectory.sort()
+        whole_trajectory.setToTopLeft(floorplan)
 
-            plot_whole_trajectory = False
+        floorplanHandler.save2DTrajectory(whole_trajectory.get_ShotsDict(), floorplan, data_dir, '2dtrajectory.csv')
 
 

@@ -8,9 +8,9 @@ import numpy as np
 import pyproj
 
 # import features
-import geo
-import types
-import context
+from . import geo
+from . import types
+from . import context
 
 
 logger = logging.getLogger(__name__)
@@ -130,25 +130,29 @@ def reconstruction_from_json(obj):
     reconstruction = types.Reconstruction()
 
     # Extract cameras
-    for key, value in obj['cameras'].iteritems():
+    # for key, value in obj['cameras'].iteritems():
+    for key, value in obj['cameras'].items():
         camera = camera_from_json(key, value)
         reconstruction.add_camera(camera)
 
     # Extract shots
-    for key, value in obj['shots'].iteritems():
+    # for key, value in obj['shots'].iteritems():
+    for key, value in obj['shots'].items():
         shot = shot_from_json(key, value, reconstruction.cameras)
         reconstruction.add_shot(shot)
 
     # Extract points
     if 'points' in obj:
-        for key, value in obj['points'].iteritems():
+        # for key, value in obj['points'].iteritems():
+        for key, value in obj['points'].items():
             point = point_from_json(key, value)
             reconstruction.add_point(point)
 
     # Extract pano_shots
     if 'pano_shots' in obj:
         reconstruction.pano_shots = {}
-        for key, value in obj['pano_shots'].iteritems():
+        # for key, value in obj['pano_shots'].iteritems():
+        for key, value in obj['pano_shots'].items():
             shot = shot_from_json(key, value, reconstruction.cameras)
             reconstruction.pano_shots[shot.id] = shot
 
@@ -160,7 +164,8 @@ def reconstruction_from_json(obj):
 
     # Extract floorplans
     if 'floorplans' in obj:
-        for key, value in obj['floorplans'].iteritems():
+        # for key, value in obj['floorplans'].iteritems():
+        for key, value in obj['floorplans'].items():
             floorplan = floorplan_from_json(key, value)
             reconstruction.add_floorplan(floorplan)
 
@@ -168,8 +173,10 @@ def reconstruction_from_json(obj):
     if 'metadata' in obj:
         metadata = types.ReconstructionMetadata()
 
-        metadata.video_delay = obj['metadata']['video_delay']
-        metadata.fps = obj['metadata']['fps']
+        metadata.name = obj['metadata']['name'] if 'name' in obj['metadata'] else ''
+        metadata.prefix = obj['metadata']['prefix'] if 'prefix' in obj['metadata'] else ''
+        metadata.video_delay = obj['metadata']['video_delay'] if 'video_delay' in obj['metadata'] else 0.0
+        metadata.fps = obj['metadata']['fps'] if 'fps' in obj['metadata'] else 3
 
         pose = types.Pose()
         pose.rotation = obj['metadata']['offset']["rotation"]
@@ -342,6 +349,8 @@ def metadata_to_json(metadata):
     }
     obj['fps'] = metadata.fps
     obj['video_delay'] = metadata.video_delay
+    obj['name'] = metadata.name
+    obj['prefix'] = metadata.prefix
 
     return obj
 
@@ -494,8 +503,9 @@ def json_dump_kwargs(minify=False, codec='utf-8'):
         indent, separators = None, (',', ':')
     else:
         indent, separators = 4, None
-    return dict(indent=indent, ensure_ascii=False,
-                encoding=codec, separators=separators)
+    # return dict(indent=indent, ensure_ascii=False,
+    #             encoding=codec, separators=separators)
+    return dict(indent=indent, ensure_ascii=False, separators=separators)
 
 
 def json_dump(data, fout, minify=False, codec='utf-8'):
@@ -679,7 +689,7 @@ def import_bundler(data_path, bundle_file, list_file, track_file,
             shot.pose.translation = t
             reconstruction.add_shot(shot)
         else:
-            print 'ignore failed image', shot_key
+            print('ignore failed image {}'.format(shot_key))
         offset += 5
 
     # tracks

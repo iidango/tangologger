@@ -3,6 +3,7 @@
 
 from utils import types
 from utils import io
+import sys
 import json
 import numpy as np
 import os
@@ -210,7 +211,7 @@ def slideToNorth(img, angle_rad, inv = False):
 
     return slided_img
 
-def loadTangoPoseWithVideo(fn, camera, video_fn, fps = 3.,delay = 0., max_frame_num=0, rotate=0.):
+def loadTangoPoseWithVideo(fn, camera, video_fn, fps = 3.,delay = 0., max_frame_num=0, rotate=0., video_range=None):
     """
     csv format: timestamp(unixtime[sec]),x[m],y[m],z[m],rotQ1,rotQ2,rotQ3,rotQ4
     
@@ -221,6 +222,7 @@ def loadTangoPoseWithVideo(fn, camera, video_fn, fps = 3.,delay = 0., max_frame_
     :type delay: float
     :type max_frame_num: int
     :type rotate: float rad
+    :type video_range: (float, float) start end time
     :rtype reconstruction: scripts.myopensfm.types.Reconstruction
     """
     mylogger.logger.info("loading TangoPose({}) with Video({}) ".format(fn, video_fn))
@@ -249,6 +251,7 @@ def loadTangoPoseWithVideo(fn, camera, video_fn, fps = 3.,delay = 0., max_frame_
 
         t_pose = 0.
         pre_pose_data = None
+        init_pose_data = None
         t_video = 0.
         count = 0
         if fps == 0:
@@ -262,14 +265,23 @@ def loadTangoPoseWithVideo(fn, camera, video_fn, fps = 3.,delay = 0., max_frame_
                 break
 
             t_video += video_period
+            if video_range is not None and not (video_range[0] < t_video < video_range[1]):
+                if t_video > period * (count + 1):
+                    mylogger.logger.debug("skip frame {}".format(count))
+                    count += 1
+                continue
+
             if t_video > period * (count + 1):
                 while True:
                     try:
-                        pose_data = reader.next()
+                        if sys.version_info[0] == 2:
+                            pose_data = reader.next()
+                        if sys.version_info[0] == 3:
+                            pose_data = next(reader)
                     except csv.Error:
-                        print "Error"
+                        print("CSV Error")
                     except StopIteration:
-                        print "Iteration End"
+                        print("Iteration End")
                         break
 
                     if pre_pose_data is None:
@@ -277,7 +289,14 @@ def loadTangoPoseWithVideo(fn, camera, video_fn, fps = 3.,delay = 0., max_frame_
 
                     t_pose += float(pose_data[0]) - float(pre_pose_data[0])
                     if t_pose > (t_video - delay):
-                        pose = TangoPose(np.array(pose_data[1:4]), np.array(pose_data[4:8]))
+                        if init_pose_data is None:
+                            init_pose_data = pose_data
+                            print("initial post: ")
+                            print(init_pose_data)
+
+                        # pose = TangoPose(np.array(pose_data[1:4]), np.array(pose_data[4:8]))
+                        # print(np.array(pose_data[1:4], dtype=float) - np.array(init_pose_data[1:4], dtype=float), np.array(pose_data[1:4]), np.array(init_pose_data[1:4]))
+                        pose = TangoPose(np.array(pose_data[1:4], dtype=float) - np.array(init_pose_data[1:4], dtype=float), np.array(pose_data[4:8]))
                         pose.setRotationAndTranslation()
                         metadata = types.ShotMetadata()
                         metadata.capture_time = float(pose_data[0])
@@ -291,7 +310,7 @@ def loadTangoPoseWithVideo(fn, camera, video_fn, fps = 3.,delay = 0., max_frame_
                         # save img
                         frame = slideToNorth(frame, rotate)
                         cv2.imwrite(os.path.join(images_dir, shot.id), frame)
-                        mylogger.logger.debug("save frame " + shot.id)
+                        mylogger.logger.info("save frame " + shot.id)
 
                         count += 1
                         pre_pose_data = pose_data
