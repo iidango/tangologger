@@ -2,6 +2,10 @@
 
 Manual alignment scripts for tango logger  
 
+## dataset
+Please put data in tangologger/data. 
+If you want to get data, please contact me.
+
 ## data format ##
 * cameraPose.csv  
 

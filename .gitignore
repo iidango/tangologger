@@ -14,10 +14,9 @@
 *.yaml
 
 __pycache__/
-data/
 log/
 .vscode/
 manual_alignment/test/io/sh/log/
 
 # add data
-!data/**
+data
